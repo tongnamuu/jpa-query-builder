@@ -5,6 +5,11 @@ import jakarta.persistence.Table;
 
 public class TableName {
     private final String tableName;
+
+    private TableName(String tableName) {
+        this.tableName = tableName;
+    }
+
     public static TableName createFromClass(Class<?> cls) {
         if (!cls.isAnnotationPresent(Entity.class)) {
             throw new IllegalArgumentException("Class is not annotated with @Entity");
@@ -18,11 +23,6 @@ public class TableName {
         }
         return new TableName(tableName);
     }
-
-    private TableName(String tableName) {
-        this.tableName = tableName;
-    }
-
 
     public String getTableName() {
         return tableName;

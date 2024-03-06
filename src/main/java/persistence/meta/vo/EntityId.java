@@ -12,6 +12,12 @@ public class EntityId {
     private final EntityField entityField;
     private final GeneratedValue generatedValue;
 
+    private EntityId(EntityField entityField,
+                     GeneratedValue generatedValue) {
+        this.entityField = entityField;
+        this.generatedValue = generatedValue;
+    }
+
     public static EntityId createFromClass(Class<?> cls) {
         List<Field> idAnnotatedFields = Arrays.stream(cls.getDeclaredFields())
                                               .filter(field -> field.isAnnotationPresent(Id.class))
@@ -28,13 +34,6 @@ public class EntityId {
             idField.isAnnotationPresent(GeneratedValue.class) ? idField.getAnnotation(GeneratedValue.class) : null;
         return new EntityId(EntityField.createFromField(idField), generatedValue);
     }
-
-    private EntityId(EntityField entityField,
-                    GeneratedValue generatedValue) {
-        this.entityField = entityField;
-        this.generatedValue = generatedValue;
-    }
-
 
     public EntityField getEntityField() {
         return entityField;

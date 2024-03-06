@@ -8,6 +8,14 @@ public class EntityMetaData {
     private final TableName tableName;
     private final List<EntityField> entityFields;
 
+    private EntityMetaData(Class<?> entityClass, EntityId entityId, TableName tableName,
+                           List<EntityField> entityFields) {
+        this.entityClass = entityClass;
+        this.entityId = entityId;
+        this.tableName = tableName;
+        this.entityFields = entityFields;
+    }
+
     public static EntityMetaData createFromClass(Class<?> cls) {
         return new EntityMetaData(
             cls,
@@ -15,14 +23,6 @@ public class EntityMetaData {
             TableName.createFromClass(cls),
             EntityField.createFromClass(cls)
         );
-    }
-
-    private EntityMetaData(Class<?> entityClass, EntityId entityId, TableName tableName,
-                           List<EntityField> entityFields) {
-        this.entityClass = entityClass;
-        this.entityId = entityId;
-        this.tableName = tableName;
-        this.entityFields = entityFields;
     }
 
     public TableName getTableName() {

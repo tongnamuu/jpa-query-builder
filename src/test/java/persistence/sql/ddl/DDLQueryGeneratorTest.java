@@ -29,7 +29,7 @@ class DDLQueryGeneratorTest {
     @DisplayName("drop table 쿼리 생성")
     void testDropTableQuery() {
         String query = ddlQueryGenerator.generateDropTableQuery(Person.class);
-        String expected = "drop table Person if exists;";
+        String expected = "drop table users if exists;";
 
         assertThat(query).isEqualTo(expected);
     }

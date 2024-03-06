@@ -14,12 +14,19 @@ public class EntityField {
     private final Optional<ColumnAnnotationData> columnAnnotationData;
     private final Class<?> fieldType;
 
+    private EntityField(String originalFieldName, Optional<ColumnAnnotationData> columnAnnotationData,
+                        Class<?> fieldType) {
+        this.originalFieldName = originalFieldName;
+        this.columnAnnotationData = columnAnnotationData;
+        this.fieldType = fieldType;
+    }
+
     public static List<EntityField> createFromClass(Class<?> cls) {
-            return Arrays.stream(cls.getDeclaredFields())
-                         .filter(field -> !field.isAnnotationPresent(Id.class))
-                         .filter(field -> !field.isAnnotationPresent(Transient.class))
-                         .map(field -> createFromField(field))
-                         .collect(Collectors.toList());
+        return Arrays.stream(cls.getDeclaredFields())
+                     .filter(field -> !field.isAnnotationPresent(Id.class))
+                     .filter(field -> !field.isAnnotationPresent(Transient.class))
+                     .map(field -> createFromField(field))
+                     .collect(Collectors.toList());
     }
 
     public static EntityField createFromField(Field field) {
@@ -36,16 +43,10 @@ public class EntityField {
 
     private static String getTableFieldName(Field field) {
         Column columnAnnotation = field.getAnnotation(Column.class);
-        if(columnAnnotation.name() == null || columnAnnotation.name().isBlank()) {
+        if (columnAnnotation.name() == null || columnAnnotation.name().isBlank()) {
             return field.getName();
         }
         return columnAnnotation.name();
-    }
-
-    private EntityField(String originalFieldName, Optional<ColumnAnnotationData> columnAnnotationData, Class<?> fieldType) {
-        this.originalFieldName = originalFieldName;
-        this.columnAnnotationData = columnAnnotationData;
-        this.fieldType = fieldType;
     }
 
     public String getTableFieldName() {
